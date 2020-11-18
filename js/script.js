@@ -5,6 +5,10 @@ let wrong = 0;
 let questions = quiz.sort(function(){
   return 0.5 - Math.random;
 });
+let totalQuestion = questions.length;
+
+
+
 
 $(function () {
   //timer code start from here
@@ -21,6 +25,9 @@ $(function () {
     $(".timerBox span").text(min + ":" + sec);
     
     if(counter == totalTime){
+      
+      alert("Time's up. Press ok to show the result");
+      result();
       clearInterval(timer);
     }
    // console.log("min=" +min)
@@ -69,11 +76,40 @@ function checkAnswer(option){
 
 //function for next question start
 function showNext(){
+  if(index >= questions.length-1){
+    showResult(0);
+    return;
+  }
   index++;
   
   $(".optionBox span").removeClass();
   $(".optionBox span").attr("onclick", "checkAnswer(this)");
   printQuestion(index);
-  console.log("hello world")
+  //console.log("hello world")
 }
 //function for next question end
+
+//function for results start
+function showResult(j){
+  if(j == 1 &&
+  index < questions.length -1 &&
+  !confirm("quiz has not finished yet. Press Ok to Skip the quiz & get you final result.")
+  ){
+    return;
+  }
+  
+  result();
+}
+$("#wrongans").text(wrong);
+//function for results end
+
+//Result function start
+function result(){
+  $("#questionScreen").hide();
+  $("#resultScreen").show();
+  
+  $("#totalquestion").text(totalQuestion);
+  $("#attemptquestion").text(attempt);
+  $("#correctans").text(score);
+}
+//Result function end
